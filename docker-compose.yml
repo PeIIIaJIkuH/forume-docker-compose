@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+    forume-api:
+        container_name: forume-api
+        restart: always
+        build:
+            context: ./forum/api
+            dockerfile: Dockerfile
+        volumes:
+            - ./forum/api/db:/go/src/app/db
+        ports:
+            - 8081:8081
+        networks:
+            [forume-network]
+
+    forume-client:
+        container_name: forume-client
+        restart: always
+        build:
+            context: ./forum-react
+            dockerfile: Dockerfile
+        volumes:
+            - './forum-react:/app'
+            - '/app/node_modules'
+        ports:
+            - 3000:3000
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        depends_on:
+            - forume-api
+        networks:
+            [forume-network]
+
+networks:
+    forume-network:
+        external:
+            name: forume-network
