@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     forume-api:
-        container_name: api
+        container_name: api-prod
         restart: always
         build:
             context: ./forum/api
@@ -13,11 +13,11 @@ services:
             - 8081:8081
 
     forume-client:
-        container_name: client
+        container_name: client-prod
         restart: always
         build:
             context: ./forum-react
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.prod
         volumes:
             - './forum-react:/app'
             - '/app/node_modules'
